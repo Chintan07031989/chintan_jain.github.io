@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chintan Jain — Manager, Zabbix Enterprise Monitoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0C;
+    --bg-soft:#111114;
+    --line:#232327;
+    --text:#F4F3EF;
+    --muted:#9A9AA1;
+    --muted-2:#5C5C63;
+    --accent:#5FE3C4;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .display{font-family:'Space Grotesk', sans-serif;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit; text-decoration:none;}
+  ::selection{background:rgba(95,227,196,0.28);}
+
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity 0.9s cubic-bezier(.16,.84,.44,1), transform 0.9s cubic-bezier(.16,.84,.44,1);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal.d1{transition-delay:0.08s;}
+  .reveal.d2{transition-delay:0.16s;}
+  .reveal.d3{transition-delay:0.24s;}
+  .reveal.d4{transition-delay:0.32s;}
+
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:linear-gradient(180deg, rgba(10,10,12,0.92), rgba(10,10,12,0));
+    padding:22px 0 40px;
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .brand{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; letter-spacing:0.2px;}
+  .navlinks{display:none; gap:30px; font-size:13px; color:var(--muted);}
+  .navlinks a:hover{color:var(--text);}
+  @media(min-width:720px){ .navlinks{display:flex;} }
+  .navcta{
+    font-size:12.5px; border:1px solid var(--line); padding:8px 16px; border-radius:100px;
+    color:var(--text);
+  }
+  .navcta:hover{border-color:var(--accent); color:var(--accent);}
+
+  header.hero{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding:140px 0 80px; position:relative;
+  }
+  .eyebrow-top{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--accent);
+    letter-spacing:1.5px; text-transform:uppercase; margin-bottom:26px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow-top .ln{width:34px; height:1px; background:var(--accent); opacity:0.5;}
+
+  h1.giant{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(42px, 9vw, 96px);
+    line-height:0.98;
+    letter-spacing:-0.03em;
+    margin-bottom:36px;
+  }
+  h1.giant .accentword{color:var(--accent);}
+  h1.giant .muted{color:var(--muted-2);}
+
+  .hero-sub{
+    max-width:600px; color:var(--muted); font-size:clamp(15px,2vw,18px);
+    margin-bottom:44px;
+  }
+  .hero-meta{
+    display:flex; flex-wrap:wrap; gap:28px;
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--muted-2);
+    border-top:1px solid var(--line); padding-top:24px; max-width:640px;
+  }
+  .hero-meta a:hover{color:var(--accent);}
+  .scroll-cue{
+    position:absolute; bottom:34px; left:28px;
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted-2);
+    display:flex; align-items:center; gap:10px;
+  }
+  .scroll-cue .bar{width:1px; height:26px; background:var(--muted-2); position:relative; overflow:hidden;}
+  .scroll-cue .bar::after{
+    content:""; position:absolute; top:-100%; left:0; width:100%; height:100%;
+    background:var(--accent); animation:drip 1.8s infinite;
+  }
+  @keyframes drip{ 0%{top:-100%;} 100%{top:100%;} }
+
+  section{padding:110px 0;}
+  section.tight{padding:70px 0;}
+  .rule{border-top:1px solid var(--line);}
+
+  .num{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--accent); letter-spacing:1px;}
+  h2.sec-title{
+    font-family:'Space Grotesk',sans-serif; font-weight:600;
+    font-size:clamp(26px,4.2vw,44px); letter-spacing:-0.02em;
+    margin:14px 0 30px;
+  }
+  p.lead{color:var(--muted); max-width:640px; font-size:16px;}
+
+  .statrow{display:grid; grid-template-columns:repeat(2,1fr); gap:36px; margin-top:56px;}
+  @media(min-width:700px){ .statrow{grid-template-columns:repeat(4,1fr);} }
+  .stat .v{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(30px,4vw,46px); color:var(--text);}
+  .stat .l{font-size:12px; color:var(--muted-2); text-transform:uppercase; letter-spacing:0.6px; margin-top:6px;}
+
+  .tagcloud{display:flex; flex-wrap:wrap; gap:12px; margin-top:34px;}
+  .tag{
+    font-size:14px; color:var(--muted); border:1px solid var(--line);
+    padding:10px 18px; border-radius:100px; transition:all 0.25s ease;
+  }
+  .tag:hover{color:var(--text); border-color:var(--accent);}
+
+  .joblist{margin-top:20px;}
+  .job{
+    padding:38px 0; border-top:1px solid var(--line);
+    display:grid; grid-template-columns:1fr; gap:10px;
+  }
+  @media(min-width:760px){ .job{grid-template-columns:200px 1fr;} }
+  .job .when{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--muted-2); padding-top:4px;}
+  .job h3{font-family:'Space Grotesk',sans-serif; font-size:21px; font-weight:600; margin-bottom:4px;}
+  .job .org{color:var(--accent); font-size:14px; margin-bottom:14px;}
+  .job ul{padding-left:18px; color:var(--muted); font-size:14.5px;}
+  .job li{margin-bottom:8px;}
+  .job details summary{
+    cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:11.5px;
+    color:var(--muted-2); list-style:none; margin-top:12px; user-select:none;
+  }
+  .job details summary:hover{color:var(--accent);}
+  .job details summary::-webkit-details-marker{display:none;}
+  .job details summary::before{content:"+ "; }
+  .job details[open] summary::before{content:"− "; }
+  .job details ul{margin-top:12px;}
+
+  .certrow{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:22px 0; border-top:1px solid var(--line); gap:16px; flex-wrap:wrap;
+  }
+  .certrow:last-child{border-bottom:1px solid var(--line);}
+  .certrow .cname{font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500;}
+  .certrow .cmeta{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted-2);}
+
+  .inits{margin-top:30px; display:grid; grid-template-columns:1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media(min-width:700px){ .inits{grid-template-columns:1fr 1fr;} }
+  .init{background:var(--bg); padding:32px; transition:background 0.3s ease;}
+  .init:hover{background:var(--bg-soft);}
+  .init .num2{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted-2); margin-bottom:16px; display:block;}
+  .init h3{font-family:'Space Grotesk',sans-serif; font-size:19px; margin-bottom:10px;}
+  .init p{color:var(--muted); font-size:14.5px;}
+
+  footer{padding:120px 0 70px;}
+  .cta-line{
+    font-family:'Space Grotesk',sans-serif; font-weight:700;
+    font-size:clamp(30px,6vw,64px); letter-spacing:-0.02em; line-height:1.05;
+    margin-bottom:40px;
+  }
+  .cta-line .accentword{color:var(--accent);}
+  .footlinks{display:flex; flex-wrap:wrap; gap:30px; margin-bottom:70px;}
+  .footlinks a{
+    font-size:15px; color:var(--muted); border-bottom:1px solid transparent; padding-bottom:2px;
+  }
+  .footlinks a:hover{color:var(--accent); border-color:var(--accent);}
+  .footbottom{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    border-top:1px solid var(--line); padding-top:26px;
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--muted-2);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    html{scroll-behavior:auto;}
+    .scroll-cue .bar::after{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">CHINTAN JAIN</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#certs">Certifications</a>
+      <a href="#initiatives">Work</a>
+    </div>
+    <a class="navcta" href="#contact">Get in touch</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow-top reveal in"><span class="ln"></span> Manager · Zabbix Enterprise Monitoring</div>
+    <h1 class="giant reveal in d1">Chintan<br><span class="muted">Jain</span> <span class="accentword">.</span></h1>
+    <p class="hero-sub reveal in d2">I build resilient, high-availability monitoring systems — 4 years deep in Zabbix, 8+ years leading teams that keep enterprise infrastructure observable, self-healing, and calm under pressure.</p>
+    <div class="hero-meta reveal in d3">
+      <a href="tel:+919880805779">+91-9880805779</a>
+      <a href="mailto:cj07031989@gmail.com">cj07031989@gmail.com</a>
+      <span>Bangalore, India</span>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="bar"></span> SCROLL</div>
+</header>
+
+<section id="about" class="tight rule">
+  <div class="wrap">
+    <div class="num reveal">01</div>
+    <h2 class="sec-title reveal">About</h2>
+    <p class="lead reveal d1">Results-driven Manager with specialized expertise in Zabbix enterprise monitoring — architecting resilient, high-availability environments and integrating Zabbix with Prometheus, Grafana, and ServiceNow to strengthen operational visibility. I drive automation initiatives, alert-correlation strategies, and cross-functional leadership that consistently improve system reliability and incident response.</p>
+    <div class="statrow">
+      <div class="stat reveal"><div class="v">4+</div><div class="l">Years in Zabbix</div></div>
+      <div class="stat reveal d1"><div class="v">8+</div><div class="l">Years Leadership</div></div>
+      <div class="stat reveal d2"><div class="v">3</div><div class="l">Certifications</div></div>
+      <div class="stat reveal d3"><div class="v">6</div><div class="l">Roles Held</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="rule">
+  <div class="wrap">
+    <div class="num reveal">02</div>
+    <h2 class="sec-title reveal">Core Competencies</h2>
+    <div class="tagcloud">
+      <span class="tag reveal">Zabbix Design &amp; Administration</span>
+      <span class="tag reveal d1">Prometheus &amp; Grafana</span>
+      <span class="tag reveal d2">High-Availability Architecture</span>
+      <span class="tag reveal d3">SNMP &amp; Network Monitoring</span>
+      <span class="tag reveal">REST API &amp; Automation</span>
+      <span class="tag reveal d1">GitHub</span>
+      <span class="tag reveal d2">ServiceNow &amp; Splunk</span>
+      <span class="tag reveal d3">Python &amp; Ansible</span>
+      <span class="tag reveal">Windows / Linux / Unix</span>
+      <span class="tag reveal d1">MySQL</span>
+      <span class="tag reveal d2">Team Leadership</span>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="rule">
+  <div class="wrap">
+    <div class="num reveal">03</div>
+    <h2 class="sec-title reveal">Experience</h2>
+
+    <div class="joblist">
+      <div class="job reveal">
+        <div class="when">JUL 2025 — PRESENT</div>
+        <div>
+          <h3>Manager</h3>
+          <div class="org">Capgemini India Pvt Ltd, Bangalore</div>
+          <ul>
+            <li>Lead end-to-end Zabbix monitoring deployment and operations across enterprise environments.</li>
+            <li>Built self-healing automations for disk space, swap space, and automated service-restart remediation.</li>
+            <li>Developed and deployed custom checks tailored to infrastructure and application requirements.</li>
+          </ul>
+          <details>
+            <summary>more details</summary>
+            <ul>
+              <li>Own the health, alerting configuration, and dashboarding of the monitoring estate.</li>
+              <li>Partner with stakeholders leveraging ServiceNow for incident, change, and problem management.</li>
+              <li>Integrate Zabbix alerting with ITSM workflows and automate ticketing to accelerate resolution times.</li>
+              <li>Support migration of legacy monitoring tools to Zabbix, ensuring continuity of coverage and data integrity.</li>
+              <li>Support monitoring deployment activities driven through ServiceNow workflows.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="when">MAY 2024 — JUL 2025</div>
+        <div>
+          <h3>Technical Lead</h3>
+          <div class="org">Larsen &amp; Toubro Technology Services, Bangalore</div>
+          <ul>
+            <li>Directed the migration of monitoring operations from Big Panda to Zabbix, seamlessly.</li>
+            <li>Architected a container-based, highly available Zabbix deployment for maximum reliability.</li>
+            <li>Introduced alert forecasting, correlation rules, and self-healing mechanisms.</li>
+          </ul>
+          <details>
+            <summary>more details</summary>
+            <ul>
+              <li>Led requirements gathering and project kickoffs for enterprise monitoring rollouts.</li>
+              <li>Configured and deployed Zabbix Server and Proxy infrastructure across network, server, and application layers.</li>
+              <li>Managed dashboard configuration, custom reporting, and multi-source alert integration.</li>
+              <li>Implemented SNMP-based monitoring (SNMPWALK, SNMPTRAP) for critical network devices.</li>
+              <li>Established Zabbix as the centralized platform, consolidating data from Grafana and other sources.</li>
+              <li>Leveraged the full Zabbix feature set — HTTP checks, agent/agentless monitoring, Trapper, SNMP Trapper.</li>
+              <li>Integrated Zabbix alerting with Microsoft Teams, Slack, email, and SMS.</li>
+              <li>Executed version upgrades of Zabbix servers, proxies, and agents.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="when">FEB 2022 — APR 2024</div>
+        <div>
+          <h3>Monitoring Deployment Engineer</h3>
+          <div class="org">Amelia (an IPsoft Company), Bangalore</div>
+          <ul>
+            <li>Deployed and managed monitoring across agent-based, SNMP, Meraki, WMI, VMware, Docker, and Kubernetes.</li>
+            <li>Automated bulk server onboarding and mass configuration changes via the Zabbix API.</li>
+            <li>Implemented high-availability failover configurations for Zabbix proxies.</li>
+          </ul>
+          <details>
+            <summary>more details</summary>
+            <ul>
+              <li>Drove requirements gathering, prerequisite sharing, and kickoff for enterprise monitoring engagements.</li>
+              <li>Customized out-of-box templates and discovery rules to align monitoring with infrastructure needs.</li>
+              <li>Partnered with cross-functional teams to troubleshoot connectivity, proxy, and firewall issues.</li>
+              <li>Diagnosed connection issues through handshake validation, log review, TCP dumps, and traceroutes.</li>
+              <li>Analyzed Zabbix Server and Proxy performance to inform scaling decisions.</li>
+              <li>Generated regular analytical reports on availability trends and resource utilization.</li>
+              <li>Tracked new Zabbix releases and executed upgrades with rigorous rollback planning.</li>
+              <li>Automated Zabbix agent upgrades using Ansible.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="when">NOV 2016 — FEB 2022</div>
+        <div>
+          <h3>Team Manager</h3>
+          <div class="org">Concentrix Services India Pvt Ltd, Bangalore</div>
+          <ul>
+            <li>Served as People Manager, overseeing performance management, coaching, and professional development.</li>
+            <li>Led a team of 15–20 Customer Service Representatives, driving coaching and engagement.</li>
+          </ul>
+          <details>
+            <summary>more details</summary>
+            <ul>
+              <li>Assigned work, managed quality standards, and led workforce management including scheduling and compliance.</li>
+              <li>Reviewed individual performance and partnered with team members on targeted improvement plans.</li>
+              <li>Built strong cross-functional relationships with project managers, operations managers, and HR.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="when">SEP 2015 — NOV 2016</div>
+        <div>
+          <h3>Transaction Quality Analyst</h3>
+          <div class="org">Concentrix Services India Pvt Ltd, Bangalore</div>
+          <ul>
+            <li>Evaluated associate performance against service level standards through call, email, and chat quality assessments.</li>
+            <li>Ensured compliance with COPC standards and ISO 9001:2008 norms for transaction monitoring.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="when">NOV 2013 — AUG 2015</div>
+        <div>
+          <h3>Associate</h3>
+          <div class="org">Concentrix Services India Pvt Ltd, Bangalore</div>
+          <ul>
+            <li>Delivered non-voice customer support for the iTunes campaign with a strong focus on quality and customer experience.</li>
+            <li>Consistently met individual performance targets and key result areas (KRAs).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certs" class="rule">
+  <div class="wrap">
+    <div class="num reveal">04</div>
+    <h2 class="sec-title reveal">Certifications</h2>
+    <div class="certlist">
+      <div class="certrow reveal">
+        <div class="cname">Zabbix Certified Specialist</div>
+        <div class="cmeta">ZABBIX 7.0 · JAN 2026</div>
+      </div>
+      <div class="certrow reveal d1">
+        <div class="cname">SAFe® 6 Agile Practitioner Certified</div>
+        <div class="cmeta">SAFE 6.0</div>
+      </div>
+      <div class="certrow reveal d2">
+        <div class="cname">Red Hat Certified System Administrator</div>
+        <div class="cmeta">RHEL 7 · AUG 2017</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="initiatives" class="rule">
+  <div class="wrap">
+    <div class="num reveal">05</div>
+    <h2 class="sec-title reveal">Selected Work</h2>
+    <div class="inits">
+      <div class="init reveal">
+        <span class="num2">01</span>
+        <h3>Self-Healing Automation Framework</h3>
+        <p>Auto-remediation for disk space, swap space, and unresponsive services — automated service restarts triggered directly from Zabbix alerting.</p>
+      </div>
+      <div class="init reveal d1">
+        <span class="num2">02</span>
+        <h3>Legacy-to-Zabbix Migration</h3>
+        <p>Led the transition from Big Panda and other legacy tools to Zabbix across enterprise environments, preserving coverage and data integrity.</p>
+      </div>
+      <div class="init reveal d2">
+        <span class="num2">03</span>
+        <h3>Container-Based HA Deployment</h3>
+        <p>Architected a highly available, container-based Zabbix deployment with parallel proxy scaling for maximum uptime.</p>
+      </div>
+      <div class="init reveal d3">
+        <span class="num2">04</span>
+        <h3>ServiceNow-Integrated Rollout</h3>
+        <p>Aligned monitoring deployment and alerting with ServiceNow change, incident, and request workflows.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact" class="rule">
+  <div class="wrap">
+    <div class="num reveal">06</div>
+    <h2 class="cta-line reveal">Let's build something<br>that stays <span class="accentword">up.</span></h2>
+    <div class="footlinks reveal d1">
+      <a href="mailto:cj07031989@gmail.com">cj07031989@gmail.com</a>
+      <a href="tel:+919880805779">+91-9880805779</a>
+    </div>
+    <div class="footbottom">
+      <span>BANGALORE, KARNATAKA, INDIA</span>
+      <span>STATUS: OPEN TO WORK</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in'); }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
